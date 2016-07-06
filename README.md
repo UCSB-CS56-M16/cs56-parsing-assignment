@@ -1,1 +1,1 @@
-# https-github.com-UCSB-CS56-M16-cs56-parsing-assignment
+# cs56-parsing-assignment
