@@ -17,6 +17,14 @@ import org.junit.Test;
 
 
 public class TestEvaluator {
+    // begin instance variables
+    private final ASTFactory af;
+    // end instance variables
+
+    public TestEvaluator() {
+        af = DefaultASTFactory.DEFAULT;
+    }
+    
     public int evaluate(final AST ast) throws EvaluatorException {
 	return DefaultInterpreterInterface.DEFAULT.evaluate(ast);
     }
@@ -39,29 +47,27 @@ public class TestEvaluator {
     @Test
     public void testLiteral() {
 	assertEquals(42,
-		     evaluateNoException(new Literal(42)));
+		     evaluateNoException(af.makeLiteral(42)));
     }
 
     @Test
     public void testPlus() {
 	assertEquals(8,
-		     evaluateNoException(new Binop(new Literal(6),
-						   Plus.PLUS,
-						   new Literal(2))));
+		     evaluateNoException(af.makePlusNode(af.makeLiteral(6),
+                                                         af.makeLiteral(2))));
     }
 
     @Test
     public void testDivNonZero() {
 	assertEquals(10,
-		     evaluateNoException(new Binop(new Literal(30),
-						   Div.DIV,
-						   new Literal(3))));
+		     evaluateNoException(af.makeDivNode(af.makeLiteral(30),
+                                                        af.makeLiteral(3))));
     }
 
     @Test
     public void testUnaryMinusLiteral() {
 	assertEquals(-10,
-		     evaluateNoException(new UnaryMinus(new Literal(10))));
+		     evaluateNoException(af.makeUnaryMinusNode(af.makeLiteral(10))));
     }
     
     // BEGIN TESTS INVOLVING DIVISION BY ZERO
@@ -71,9 +77,8 @@ public class TestEvaluator {
     @Test
     public void testDivDirectZero() throws EvaluatorException {
 	thrown.expect(EvaluatorException.class);
-	evaluate(new Binop(new Literal(14),
-			   Div.DIV,
-			   new Literal(0)));
+	evaluate(af.makeDivNode(af.makeLiteral(14),
+                                af.makeLiteral(0)));
     }
-} // TestAST
+} // TestEvaluator
 

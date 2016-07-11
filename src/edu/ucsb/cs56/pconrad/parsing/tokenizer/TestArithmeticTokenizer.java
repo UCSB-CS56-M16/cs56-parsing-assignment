@@ -13,6 +13,14 @@ import org.junit.rules.ExpectedException;
 */
 
 public class TestArithmeticTokenizer {
+    // begin instance variables
+    private final TokenFactory tf;
+    // end instance variables
+
+    public TestArithmeticTokenizer() {
+        tf = DefaultTokenFactory.DEFAULT;
+    }
+    
     public static Token[] tokenize(final String input)
 	throws TokenizerException {
 	return DEFAULT.tokenize(input).toArray(new Token[0]);
@@ -32,14 +40,14 @@ public class TestArithmeticTokenizer {
 
     @Test
     public void testOneToken() {
-        assertArrayEquals(new Token[] { new CharToken('+') },
+        assertArrayEquals(new Token[] { tf.makePlusToken() },
                           tokenizeNoException("+"));
     }
 
     @Test
     public void testTwoSameTokens() {
-        assertArrayEquals(new Token[] { new CharToken('+'),
-                                        new CharToken('+') },
+        assertArrayEquals(new Token[] { tf.makePlusToken(),
+                                        tf.makePlusToken() },
                           tokenizeNoException("++"));
     }
 
@@ -51,13 +59,13 @@ public class TestArithmeticTokenizer {
 
     @Test
     public void testSingleDigit() {
-        assertArrayEquals(new Token[] { new IntToken(1) },
+        assertArrayEquals(new Token[] { tf.makeIntToken(1) },
                           tokenizeNoException("1"));
     }
 
     @Test
     public void testTwoDigit() {
-        assertArrayEquals(new Token[] { new IntToken(12) },
+        assertArrayEquals(new Token[] { tf.makeIntToken(12) },
                           tokenizeNoException("12"));
     }
 

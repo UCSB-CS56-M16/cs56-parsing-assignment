@@ -1,6 +1,6 @@
 package edu.ucsb.cs56.pconrad.parsing.parser;
 
-import edu.ucsb.cs56.pconrad.parsing.tokenizer.TokenizerException;
+import edu.ucsb.cs56.pconrad.parsing.tokenizer.*;
 import edu.ucsb.cs56.pconrad.parsing.syntax.*;
 
 import static edu.ucsb.cs56.pconrad.parsing.DefaultInterpreterInterface.DEFAULT;
@@ -18,12 +18,20 @@ import java.io.IOException;
  */ 
 
 public class TestParser {
-    public AST parse(final String input)
+    // begin instance variables
+    private final ASTFactory af;
+    // end instance variables
+
+    public TestParser() {
+        af = DefaultASTFactory.DEFAULT;
+    }
+    
+    public static AST parse(final String input)
 	throws TokenizerException, ParserException {
 	return DEFAULT.tokenizeAndParse(input);
     }
 
-    public AST parseNoException(final String input) {
+    public static AST parseNoException(final String input) {
         AST retval = null;
 
         try {
@@ -40,63 +48,56 @@ public class TestParser {
     
     @Test
     public void testParseNum() {
-        assertEquals(new Literal(42),
+        assertEquals(af.makeLiteral(42),
                      parseNoException("42"));
     }
 
     @Test
     public void testParseAdd() {
-        assertEquals(new Binop(new Literal(1),
-                               Plus.PLUS,
-                               new Literal(2)),
+        assertEquals(af.makePlusNode(af.makeLiteral(1),
+                                     af.makeLiteral(2)),
                      parseNoException("1 + 2"));
     }
 
     @Test
     public void testParseParensLiteral() {
-        assertEquals(new Literal(1),
+        assertEquals(af.makeLiteral(1),
                      parseNoException("(1)"));
     }
     
     @Test
     public void testParseParensBinop() {
-        assertEquals(new Binop(new Literal(1),
-                               Plus.PLUS,
-                               new Literal(2)),
+        assertEquals(af.makePlusNode(af.makeLiteral(1),
+                                     af.makeLiteral(2)),
                      parseNoException("(1 + 2)"));
     }
 
     @Test
     public void testPrecedenceHigherFirst() {
-        assertEquals(new Binop(new Binop(new Literal(1),
-                                         Times.TIMES,
-                                         new Literal(2)),
-                               Plus.PLUS,
-                               new Literal(3)),
+        assertEquals(af.makePlusNode(af.makeTimesNode(af.makeLiteral(1),
+                                                      af.makeLiteral(2)),
+                                     af.makeLiteral(3)),
                      parseNoException("1 * 2 + 3"));
     }
 
     @Test
     public void testPrecedenceParensApplyRight() {
-        assertEquals(new Binop(new Literal(1),
-                               Times.TIMES,
-                               new Binop(new Literal(2),
-                                         Plus.PLUS,
-                                         new Literal(3))),
+        assertEquals(af.makeTimesNode(af.makeLiteral(1),
+                                      af.makePlusNode(af.makeLiteral(2),
+                                                      af.makeLiteral(3))),
                      parseNoException("1 * (2 + 3)"));
     }
 
     @Test
     public void testUnaryMinusLiteral() {
-	assertEquals(new UnaryMinus(new Literal(42)),
+	assertEquals(af.makeUnaryMinusNode(af.makeLiteral(42)),
 		     parseNoException("-42"));
     }
 
     @Test
     public void testUnaryMinusNonMinusBinop() {
-	assertEquals(new Binop(new Literal(2),
-			       Plus.PLUS,
-			       new UnaryMinus(new Literal(5))),
+	assertEquals(af.makePlusNode(af.makeLiteral(2),
+                                     af.makeUnaryMinusNode(af.makeLiteral(5))),
 		     parseNoException("2 + -5"));
     }
 
@@ -121,7 +122,7 @@ public class TestParser {
         throws TokenizerException, ParserException {
         parseExpectFailure("5 +");
     }
-    
+
     @Test
     public void testMissingSecondOperandInParens() 
         throws TokenizerException, ParserException {
