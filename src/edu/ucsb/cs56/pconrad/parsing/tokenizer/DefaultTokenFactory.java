@@ -1,5 +1,12 @@
 package edu.ucsb.cs56.pconrad.parsing.tokenizer;
 
+/**
+ * Provides a default implementation of <code>TokenFactory</code>, in terms
+ * of <code>IntToken</code> and <code>CharToken</code>.  This is ultimately
+ * what is used in the tokenizer test suite.
+ * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.IntToken
+ * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.CharToken
+ */
 public class DefaultTokenFactory implements TokenFactory {
     // begin constants
     public static final DefaultTokenFactory DEFAULT = new DefaultTokenFactory();

@@ -2,12 +2,26 @@ package edu.ucsb.cs56.pconrad.parsing.tokenizer;
 
 import java.util.*;
 
+/**
+ * The state we are in while we are parsing an integer, which may be spread
+ * across multiple characters.  For example, <code>123</code> is a single
+ * integer and should be represented with a single <code>IntToken</code>, but
+ * nonetheless it takes up three characters.
+ * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.IntToken
+ */
 public class IntTokenizerState implements TokenizerState {
     // begin instance variables
     private final ArrayList<Integer> digits;
     private InitialTokenizerState initialState;
     // end instance variables
 
+    /**
+     * @param startDigit The digit that we start on, which is assumed to
+     *        be in the range 0-9
+     * @param initialState The initial state for the tokenizer, as per the
+     *        State pattern.  This is necessary because when we are done
+     *        parsing the input integer, we must return to the initial state
+     */
     public IntTokenizerState(final char startDigit,
 			     final InitialTokenizerState initialState) {
 	digits = new ArrayList<Integer>();
@@ -19,7 +33,16 @@ public class IntTokenizerState implements TokenizerState {
 	assert(Character.isDigit(digit));
 	digits.add(new Integer(toDigit(digit)));
     }
-    
+
+    /**
+     * Converts the given character <code>c</code> to a digit.
+     * <code>c</code> must be in the range 0-9, or else an assertion
+     * will be tripped.
+     *
+     * @param c The character to convert to an integer
+     * @return The integer value of the character, which will be in the range
+     *         0-9, inclusive
+     */
     public static int toDigit(final char c) {
 	assert(Character.isDigit(c));
 	switch (c) {
@@ -49,6 +72,15 @@ public class IntTokenizerState implements TokenizerState {
 	}
     }
 
+    /**
+     * Will convert the given sequence of integers into a single integer.
+     * Assumes that each integer in the sequence is in the range 0-9, inclusive.
+     * For example, if given the list <code>[1, 2, 3]</code>, this will return
+     * the single integer <code>123</code>.
+     * <p>An <code>ArrayList</code> is specifically used as opposed to the
+     * more generic <code>List</code>, as this requires constant-time random
+     * access for efficiency.
+     */
     public static int digitsToInt(final ArrayList<Integer> digits) {
 	int retval = 0;
 	int multiplier = 1;
@@ -59,12 +91,27 @@ public class IntTokenizerState implements TokenizerState {
 	return retval;
     }
 
+    /**
+     * Returns a list containing a single <code>IntToken</code> representing
+     * the digits held within.
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.IntToken
+     */
     private List<Token> makeBaseRetvalTokens() {
 	final List<Token> retvalTokens = new ArrayList<Token>();
 	retvalTokens.add(new IntToken(digitsToInt(digits)));
 	return retvalTokens;
     }
-    
+
+    /**
+     * Transitions to the next state under the given character
+     * <code>curChar</code>.  Intuitively, if <code>curChar</code>
+     * is a digit, it will add it to the digits for the <code>IntToken</code>
+     * which is being created.  If <code>curChar</code> is not a digit, then
+     * it will bundle up the digits into a single <code>IntToken</code>, and
+     * make a transition using the initial state (passed in the constructor)
+     * and <code>curChar</code>.
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.IntToken
+     */
     public TokenizerStateResult nextState(final char curChar)
 	throws TokenizerException {
 	if (Character.isDigit(curChar)) {
@@ -78,8 +125,13 @@ public class IntTokenizerState implements TokenizerState {
 	}
     }
 
+    /**
+     * Will bundle up all the digits seen so far into a single
+     * <code>IntToken</code>.
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.IntToken
+     */     
     public List<Token> atInputEnd() throws TokenizerException {
 	return makeBaseRetvalTokens();
     }
-} // TokenizerState
+} // IntTokenizerState
 

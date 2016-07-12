@@ -1,7 +1,7 @@
 package edu.ucsb.cs56.pconrad.parsing.syntax;
 
 /**
- * Interface from which all AST nodes inherit.
+ * Interface which all AST nodes must implement.
  */
 public interface AST {
     public boolean equals(Object other);
@@ -9,7 +9,7 @@ public interface AST {
     public String toString();
 
     /**
-     * The accept method as per the visitor pattern, allowing us to visit
+     * The accept method as per the Visitor pattern, allowing us to visit
      * different kinds of AST nodes.
      *
      * Type variable <code>A</code> stands for whatever the visitor returns

@@ -1,10 +1,16 @@
 package edu.ucsb.cs56.pconrad.parsing.tokenizer;
 
+/**
+ * Represents an integer token, which contains a specific integer
+ */
 public class IntToken implements Token {
     // begin instance variables
     private final int value;
     // end instance variables
 
+    /**
+     * @param value The integer value for this token to hold
+     */
     public IntToken(final int value) {
         this.value = value;
     }
@@ -24,6 +30,12 @@ public class IntToken implements Token {
         return Integer.toString(value);
     }
 
+    /**
+     * Calls <code>visitor</code>'s <code>visitIntToken</code> method, passing
+     * along the integer value held within this token (which was provided
+     * in the constructor).
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.TokenVisitor#visitIntToken
+     */
     public <A, T extends Throwable> A accept(final TokenVisitor<A, T> visitor) throws T {
 	return visitor.visitIntToken(value);
     }

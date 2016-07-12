@@ -8,10 +8,13 @@ import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-/** 
-    Go from a string to a Token [] 
-*/
-
+/**
+ * Tests <code>ArithmeticTokenizer</code>'s <code>tokenize</code>
+ * method.  Ultimately, this is testing to see if we can go
+ * from a raw input string into a list of <code>Token</code>s.
+ * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.ArithmeticTokenizer#tokenize
+ * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.Token
+ */
 public class TestArithmeticTokenizer {
     // begin instance variables
     private final TokenFactory tf;
@@ -20,12 +23,24 @@ public class TestArithmeticTokenizer {
     public TestArithmeticTokenizer() {
         tf = DefaultTokenFactory.DEFAULT;
     }
-    
+
+    /**
+     * Convenience method to tokenize the given input.
+     */
     public static Token[] tokenize(final String input)
 	throws TokenizerException {
 	return DEFAULT.tokenize(input).toArray(new Token[0]);
     }
-    
+
+    /**
+     * Like <code>tokenize</code>, except it will catch
+     * <code>TokenizerException</code>s so that we don't need to
+     * keep annotating that tests can throw this exception.
+     * Internally, if <code>TokenizerException</code> is thrown,
+     * this will trigger test failure.
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.TestArithmeticTokenizer#tokenize
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.TokenizerException
+     */
     public static Token[] tokenizeNoException(final String input) {
         Token[] retval = null;
         try {

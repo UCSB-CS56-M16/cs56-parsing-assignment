@@ -2,11 +2,22 @@ package edu.ucsb.cs56.pconrad.parsing.tokenizer;
 
 import java.util.*;
 
+/**
+ * The state we start out in, as per the State pattern.
+ */
 public class InitialTokenizerState implements TokenizerState {
     // begin instance variables
     private final Set<Character> recognizedTokens;
     // end instance variables
-    
+
+    /**
+     * @param recognizedTokens The set of characters which are recognized
+     *        as tokens.  Each of these can be used to produce instances
+     *        of <code>CharToken</code>, as described in the documentation
+     *        of <code>Tokenizer</code>.
+     *        @see edu.ucsb.cs56.pconrad.parsing.tokenizer.CharToken
+     *        @see edu.ucsb.cs56.pconrad.parsing.tokenizer.Tokenizer
+     */
     public InitialTokenizerState(final Set<Character> recognizedTokens) {
 	this.recognizedTokens = recognizedTokens;
     }
