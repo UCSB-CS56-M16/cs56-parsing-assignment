@@ -14,9 +14,13 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 
 /**
- Tests going from a string to an AST
- */ 
-
+ * Tests the code in <code>Parser</code>.
+ * Specifically, this ensures that we properly go from lists of <code>Token</code>s
+ * to <code>AST</code>s.
+ * @see edu.ucsb.cs56.pconrad.parsing.parser.Parser
+ * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.Token
+ * @see edu.ucsb.cs56.pconrad.parsing.syntax.AST
+ */
 public class TestParser {
     // begin instance variables
     private final ASTFactory af;
@@ -25,12 +29,25 @@ public class TestParser {
     public TestParser() {
         af = DefaultASTFactory.DEFAULT;
     }
-    
+
+    /**
+     * Convenience method to tokenize and parse the given input
+     */
     public static AST parse(final String input)
 	throws TokenizerException, ParserException {
 	return DEFAULT.tokenizeAndParse(input);
     }
 
+    /**
+     * Like <code>parse</code>, but it does not throw any annotated
+     * exceptions.  This is to avoid repeatedly annotating tests to
+     * throw exceptions.  Internally, if tokenizing or parsing
+     * <code>input</code> throws either a <code>TokenizerException</code>
+     * or a <code>ParserException</code>, this will trigger test failure.
+     * @see edu.ucsb.cs56.pconrad.parsing.parser.Parser#parse
+     * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.TokenizerException
+     * @see edu.ucsb.cs56.pconrad.parsing.parser.ParserException
+     */
     public static AST parseNoException(final String input) {
         AST retval = null;
 

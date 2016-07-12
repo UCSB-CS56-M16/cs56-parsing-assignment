@@ -5,15 +5,12 @@ import edu.ucsb.cs56.pconrad.parsing.tokenizer.*;
 
 import java.util.*;
 
-// Simplifications:
-//
-// 1. We don't separate out tokenization
-// 2. We only say if the input parses.  We don't produce an AST.
-//
-// throwing a ParserException indicates that something
-// doesn't parse
+/**
+ * Parses a sequence of tokens into an AST.
+ * This is specific to our arithmetic expression language.
+ */
 public class Parser {
-    // begin constants
+    // BEGIN CONSTANTS
     public static final Map<Token, Operator> PLUS_MINUS =
 	new HashMap<Token, Operator>() {{
 	    put(new CharToken('+'), Plus.PLUS);
@@ -30,17 +27,32 @@ public class Parser {
     public static final Token MINUS_TOKEN = new CharToken('-');
     public static final Token TIMES_TOKEN = new CharToken('*');
     public static final Token DIV_TOKEN = new CharToken('/');
-    // end constants
+    // END CONSTANTS
     
-    // begin instance variables
+    // BEGIN INSTANCE VARIABLES
     private final ArrayList<Token> input;
-    // end instance varirables
+    // END INSTANCE VARIABLES
 
-    // This is specifically an ArrayList for constant-time random access
+    /**
+     * @param input The tokens to parse.  This is intentionally an <code>ArrayList</code>
+     *              to guarantee constant-time random access, which is necessary
+     *              for performance.
+     */
     public Parser(final ArrayList<Token> input) {
 	this.input = input;
     }
 
+    /**
+     * <code>TokenVisitor</code> specific for parsing in <code>primary</code> expressions,
+     * according to our grammar for arithmetic expressions.  This is intentionally defined
+     * as an inner class within <code>Parser</code>.  This gives the class access to
+     * all the methods within <code>Parser</code>, without making those methods <code>public</code>.
+     * If this had been defined as a separate class, it would be necessary to make the methods
+     * on <code>Parser</code> <code>public</code>, or else <code>PrimaryTokenVisitor</code>
+     * would have no way of accessing them.  Considering that the methods are very specific
+     * to our particular grammar, and that they reek of implementation detail, it is more
+     * appropriate to leave these methods <code>private</code>.
+     */
     private class PrimaryTokenVisitor implements TokenVisitor<ParseResult<AST>, ParserException> {
 	// begin instance variables
 	private final int startPos;
@@ -74,11 +86,27 @@ public class Parser {
 	    }
 	}
     } // PrimaryTokenVisitor
-    
+
+    /**
+     * Parses a <code>primary</code> expression, as per our arithmetic expression grammar.
+     *
+     * @param pos The position where to start parsing from
+     */
     private ParseResult<AST> parsePrimary(final int pos) throws ParserException {
 	return tokenAt(pos).accept(new PrimaryTokenVisitor(pos));
     } // parsePrimary
-    
+
+    /**
+     * Parses an <code>Operator</code>.
+     *
+     * @param pos The position where to start parsing from
+     * @param operators A mapping from tokens to operators.
+     *        If we encounter a token which matches a key in the <code>operators</code>
+     *        map, then this will return the corresponding operator (i.e., the value
+     *        for that key).
+     * @throws ParserException If the token at <code>pos</code> does not have a key
+     *         in the <code>operators</code> map
+     */
     private ParseResult<Operator> parseOperator(final int pos,
 						final Map<Token, Operator> operators)
 	throws ParserException {
@@ -101,8 +129,11 @@ public class Parser {
     }
 
     // BEGIN CODE FOR MULTIPLICATIVE AND ADDITIVE EXPRESSIONS
-    // these are defined as inner classes in order to get access
-    // to methods on the parser itself (e.g., parsePlusMinus, etc.)
+    /**
+     * As with <code>PrimaryTokenVisitor</code>, this is defined as an inner class
+     * to get access to all the methods on <code>Parser</code>, without (innapropriately)
+     * making those methods <code>public</code>.
+     */
     private class ParseAdditive extends ParseAdditiveOrMultiplicative {
 	public ParseResult<AST> parseBase(final int pos) throws ParserException {
 	    return parseMultiplicativeExpression(pos);
@@ -112,6 +143,11 @@ public class Parser {
 	}
     }
 
+    /**
+     * As with <code>PrimaryTokenVisitor</code>, this is defined as an inner class
+     * to get access to all the methods on <code>Parser</code>, without (innapropriately)
+     * making those methods <code>public</code>.
+     */
     private class ParseMultiplicative extends ParseAdditiveOrMultiplicative {
 	public ParseResult<AST> parseBase(final int pos) throws ParserException {
 	    return parsePrimary(pos);
@@ -126,8 +162,7 @@ public class Parser {
     // them throughout
     private final ParseAdditive PARSE_ADDITIVE = new ParseAdditive();
     private final ParseMultiplicative PARSE_MULTIPLICATIVE = new ParseMultiplicative();
-    // END CODE FOR MULIPLICATIVE AND ADDITIVE EXPRESSIONS
-    
+
     private ParseResult<AST> parseMultiplicativeExpression(final int pos)
 	throws ParserException {
 	return PARSE_MULTIPLICATIVE.parseExp(pos);
@@ -137,11 +172,24 @@ public class Parser {
 	throws ParserException {
 	return PARSE_ADDITIVE.parseExp(pos);
     }
-
+    // END CODE FOR MULIPLICATIVE AND ADDITIVE EXPRESSIONS
+    
     private ParseResult<AST> parseExpression(final int pos) throws ParserException {
 	return parseAdditiveExpression(pos);
     }
 
+    /**
+     * Used to get access to underlying tokens.
+     * This should <b>always</b> be used instead of directly accessing the underlying
+     * list of tokens.  While running off of the end of a list usually indicates a bug,
+     * when it comes to parsing running off the end of the list simply means the input
+     * wasn't valid (which isn't a bug, but an error in user input).
+     *
+     * @param pos The position where to get the token
+     * @return The token at <code>pos</code>
+     * @throws ParserException if <code>pos</code> is out of range; that is, there
+     *         is no token at <code>pos</code>.
+     */
     private Token tokenAt(final int pos) throws ParserException {
 	if (pos < 0 || pos >= input.size()) {
 	    throw new ParserException("Attempted to get token out of position");
@@ -150,6 +198,13 @@ public class Parser {
 	}
     }
 
+    /**
+     * Parses the list of tokens provided in the constructor.
+     *
+     * @return The AST resulting from parsing
+     * @throws ParserException If the tokens could not be parsed, e.g., with the
+     *         input <code>)3(</code>.
+     */
     public AST parse() throws ParserException {
 	final ParseResult<AST> rawResult = parseExpression(0);
 	if (rawResult.getNextPos() != input.size()) {
