@@ -12,23 +12,33 @@ import org.junit.rules.ExpectedException;
 import org.junit.Test;
 
 /**
-   Test going from an AST to a int result (by evaluating it)
- */ 
-
-
+ * Tests the evaluator; that is, the code that takes an
+ * AST and evaluates it down to an integer.
+ */
 public class TestEvaluator {
-    // begin instance variables
+    // BEGIN INSTANCE VARIABLES
     private final ASTFactory af;
-    // end instance variables
+    // END INSTANCE VARIABLES
 
     public TestEvaluator() {
         af = DefaultASTFactory.DEFAULT;
     }
-    
+
+    /**
+     * Convenience method to evaluate the given <code>ast</code>
+     * to an integer
+     */
     public int evaluate(final AST ast) throws EvaluatorException {
 	return DefaultInterpreterInterface.DEFAULT.evaluate(ast);
     }
-    
+
+    /**
+     * Similar to <code>evaluate</code>, except an <code>EvaluatorException</code>
+     * triggers a test failure.  This lifts the burden of annotating tests which
+     * are supposed to pass with the otherwise superfluous <code>EvaluatorException</code>.
+     * @see edu.ucsb.cs56.pconrad.parsing.evaluator.TestEvaluator#evaluate
+     * @see edu.ucsb.cs56.pconrad.parsing.evaluator.EvaluatorException
+     */
     public int evaluateNoException(final AST ast) {
 	int retval = 0;
 	boolean retvalSet = false;

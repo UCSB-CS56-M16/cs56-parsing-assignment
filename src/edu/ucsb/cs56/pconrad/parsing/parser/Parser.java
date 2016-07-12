@@ -44,7 +44,8 @@ public class Parser {
 
     /**
      * <code>TokenVisitor</code> specific for parsing in <code>primary</code> expressions,
-     * according to our grammar for arithmetic expressions.  This is intentionally defined
+     * according to our grammar for arithmetic expressions.  This is per the usual definition
+     * of the Visitor pattern.  This is intentionally defined
      * as an inner class within <code>Parser</code>.  This gives the class access to
      * all the methods within <code>Parser</code>, without making those methods <code>public</code>.
      * If this had been defined as a separate class, it would be necessary to make the methods
