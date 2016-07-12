@@ -7,6 +7,13 @@ import edu.ucsb.cs56.pconrad.parsing.evaluator.*;
 
 import java.util.ArrayList;
 
+/**
+ * A default implementation for InterpreterInterface.
+ * This is used in both the test suite and the REPL, and is defined in
+ * terms of the components in edu.ucsb.cs56.pconrad.parsing.tokenizer,
+ * edu.ucsb.cs56.pconrad.parsing.parser, and
+ * edu.ucsb.cs56.pconrad.parsing.evaluator.
+ */
 public class DefaultInterpreterInterface extends InterpreterInterface {
     public static final DefaultInterpreterInterface DEFAULT =
 	new DefaultInterpreterInterface();

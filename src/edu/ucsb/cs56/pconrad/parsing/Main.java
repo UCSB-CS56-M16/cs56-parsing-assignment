@@ -8,7 +8,16 @@ import edu.ucsb.cs56.pconrad.parsing.evaluator.EvaluatorException;
 
 import java.util.Scanner;
 
+/**
+ * A small REPL where users can type in arithmetic expressions, which will subsequently be
+ * evaluated.  If a malformed expression is entered, or division by zero occurs, it will
+ * alert the user.  Type "q" or "quit" to exit.
+ */
 public class Main {
+    /**
+     * Evaluate the given expression down to a value, possibly throwing
+     * an exception along the way.
+     */
     public static int evaluate(final String input)
 	throws TokenizerException, ParserException, EvaluatorException {
 	return DefaultInterpreterInterface.DEFAULT.tokenizeParseAndEvaluate(input);
@@ -41,7 +50,10 @@ public class Main {
             return false;
         }
     }
-    
+
+    /**
+     * Entry point for the REPL
+     */
     public static void main(String[] args) {
 	final Scanner input = new Scanner(System.in);
 	while (input.hasNextLine() &&

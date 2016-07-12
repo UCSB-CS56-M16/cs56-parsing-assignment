@@ -3,7 +3,7 @@ package edu.ucsb.cs56.pconrad.parsing.syntax;
 /**
  * Decouples token constructors and underlying class hierarchy from
  * how AST nodes behave.  Only used in the test suites for the parser
- * and the evaluator.
+ * and the evaluator.  Uses the Factory method design pattern.
  */
 public interface ASTFactory {
     public AST makeLiteral(int value);
