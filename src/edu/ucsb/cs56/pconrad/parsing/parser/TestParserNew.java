@@ -16,12 +16,12 @@ import org.junit.Test;
  * file to help prevent merge conflicts from occurring.
  * @see edu.ucsb.cs56.pconrad.parsing.parser.TestParser
  */
-public class NewTestParser {
+public class TestParserNew {
     // begin instance variables
     private final ASTFactory af;
     // end instance variables
 
-    public NewTestParser() {
+    public TestParserNew() {
         af = DefaultASTFactory.DEFAULT;
     }
 
