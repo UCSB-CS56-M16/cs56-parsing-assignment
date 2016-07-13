@@ -13,12 +13,12 @@ import org.junit.Test;
  * file to help prevent merge conflicts from occurring.
  * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.TestArithmeticTokenizer
  */
-public class NewTestArithmeticTokenizer {
+public class TestArithmeticTokenizerNew {
     // begin instance variables
     private final TokenFactory tf;
     // end instance variables
 
-    public NewTestArithmeticTokenizer() {
+    public TestArithmeticTokenizerNew() {
         tf = DefaultTokenFactory.DEFAULT;
     }
 
