@@ -18,7 +18,7 @@ public class NewTestParser {
     private final ASTFactory af;
     // end instance variables
 
-    public TestParser() {
+    public NewTestParser() {
         af = DefaultASTFactory.DEFAULT;
     }
 
