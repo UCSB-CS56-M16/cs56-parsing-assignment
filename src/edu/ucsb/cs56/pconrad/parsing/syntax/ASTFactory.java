@@ -12,4 +12,9 @@ public interface ASTFactory {
     public AST makeTimesNode(AST left, AST right);
     public AST makeDivNode(AST left, AST right);
     public AST makeUnaryMinusNode(AST inner);
+
+    // New AST nodes
+    public AST makeEqualsNode(AST left, AST right);
+    public AST makeNotEqualsNode(AST left, AST right);}
 }
+
