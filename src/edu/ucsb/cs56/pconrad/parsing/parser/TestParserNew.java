@@ -38,4 +38,4 @@ public class TestParserNew {
                                           af.makeLiteral(2)),
                      parseNoException("1 != 2"));
     }
-} // NewTestParser
+} // TestParserNew
