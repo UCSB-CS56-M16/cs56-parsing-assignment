@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Like <code>TestArithmeticTokenizer</code>, but it adds in
  * tests for the new grammar.  This would normally be put
- * in <code>ArithmeticTokenizer</code>, but here we use a separate
+ * in <code>TestArithmeticTokenizer</code>, but here we use a separate
  * file to help prevent merge conflicts from occurring.
  * @see edu.ucsb.cs56.pconrad.parsing.tokenizer.TestArithmeticTokenizer
  */
