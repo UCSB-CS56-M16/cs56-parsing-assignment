@@ -1,5 +1,8 @@
 package edu.ucsb.cs56.pconrad.parsing.parser;
 
+import edu.ucsb.cs56.pconrad.parsing.tokenizer.*;
+import edu.ucsb.cs56.pconrad.parsing.syntax.*;
+
 import static edu.ucsb.cs56.pconrad.parsing.parser.TestParser.parseNoException;
 
 import static org.junit.Assert.assertEquals;
