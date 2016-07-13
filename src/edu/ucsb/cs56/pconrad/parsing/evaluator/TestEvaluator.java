@@ -28,7 +28,7 @@ public class TestEvaluator {
      * Convenience method to evaluate the given <code>ast</code>
      * to an integer
      */
-    public int evaluate(final AST ast) throws EvaluatorException {
+    public static int evaluate(final AST ast) throws EvaluatorException {
 	return DefaultInterpreterInterface.DEFAULT.evaluate(ast);
     }
 
@@ -39,7 +39,7 @@ public class TestEvaluator {
      * @see edu.ucsb.cs56.pconrad.parsing.evaluator.TestEvaluator#evaluate
      * @see edu.ucsb.cs56.pconrad.parsing.evaluator.EvaluatorException
      */
-    public int evaluateNoException(final AST ast) {
+    public static int evaluateNoException(final AST ast) {
 	int retval = 0;
 	boolean retvalSet = false;
 	
