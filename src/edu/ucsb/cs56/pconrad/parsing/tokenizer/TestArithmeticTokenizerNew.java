@@ -18,7 +18,7 @@ public class TestArithmeticTokenizerNew {
     private final TokenFactory tf;
     // end instance variables
 
-    public NewTestArithmeticTokenizer() {
+    public TestArithmeticTokenizerNew() {
         tf = DefaultTokenFactory.DEFAULT;
     }
 
