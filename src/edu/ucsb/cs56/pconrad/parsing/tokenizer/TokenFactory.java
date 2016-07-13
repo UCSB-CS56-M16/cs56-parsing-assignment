@@ -12,4 +12,8 @@ public interface TokenFactory {
     public Token makeTimesToken();
     public Token makeDivToken();
     public Token makeIntToken(int value);
+
+    // New token types
+    public Token makeEqualsToken();
+    public Token makeNotEqualsToken();
 }
